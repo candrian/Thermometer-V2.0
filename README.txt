@@ -1,0 +1,5 @@
+ThermometerV2.0 is coming to replace in hardware and software V1.0.
+
+I designed this version in the need of a thermometer for my room, built in a small pack and easy to control. The hardware is designed on a way so that the pcb can be wall mounted. At the top side of the device the PCB extents giving space for two keyhole type holes which are able to keep the device mounted on the wall. The LCD display plugs at the front side of the PCB, covering all the electronic components and giving a compact design view. The user can interact with the device using the left side switch button. The design includes a 6-pin header which gives connectivity for UART (RX,TX,GND) and for the external sensor DHT-11 (VCC,GND,DATA). Also there is an ISP-6 pin header which gives the option of on board programming. Finally there is an optional Bluetooth plug on the back side connected with AVRs UART for possible communication to other devices like mobile phones, home automation devices, pc's or whatever you imagine.
+
+More info @ www.candrian.gr
