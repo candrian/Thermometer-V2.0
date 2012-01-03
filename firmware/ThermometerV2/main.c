@@ -101,10 +101,8 @@ static void display_data(){
         lcd_putc('C');                      //Print character C 
         
         //Sense temp
-        lcd_gotoxy(12,1);
-        lcd_puts(int_to_char(sense_temp(out_temp, humidity)));
-        lcd_gotoxy(15,1);
-        lcd_putc('C');
+        lcd_gotoxy(11,1);
+        lcd_puts(int_to_float_char(sense_temp(out_temp, humidity)));
         
         //Outside
         lcd_gotoxy(4,1);        
@@ -119,7 +117,7 @@ static void display_data(){
         uart_puts(int_to_char(out_temp));
         uart_puts(".0C\r\n");
         uart_puts("Sense   :");
-        uart_puts(int_to_char(sense_temp(out_temp, humidity)));
+        uart_puts(int_to_float_char(sense_temp(out_temp, humidity)));
         uart_puts(".0C\r\n");
         
     }else{
@@ -130,10 +128,8 @@ static void display_data(){
         lcd_putc('F');
         
         //Sense temp
-        lcd_gotoxy(12,1);
-        lcd_puts(int_to_char(to_fahrenheit(sense_temp(out_temp, humidity))));
-        lcd_gotoxy(15,1);
-        lcd_putc('F');
+        lcd_gotoxy(11,1);
+        lcd_puts(int_to_float_char(to_fahrenheit(sense_temp(out_temp, humidity))));
         
         //Outside
         lcd_gotoxy(4,1);
@@ -148,7 +144,7 @@ static void display_data(){
         uart_puts(int_to_char(to_fahrenheit(out_temp)));
         uart_puts(".0F\r\n");
         uart_puts("Sense   :");
-        uart_puts(int_to_char(to_fahrenheit(sense_temp(out_temp, humidity))));
+        uart_puts(int_to_float_char(to_fahrenheit(sense_temp(out_temp, humidity))));
         uart_puts(".0F\r\n");
         
     }
@@ -235,16 +231,14 @@ static uint16_t adc_read(){
 }
 
 static uint32_t adc_to_volt(){
-    
+    uint32_t result;
     //Voltage calculation V=(adc_value*Vref)/1024. 1024 is the max ADC value
-    //The resault of the formula is float. To avoid floats we multiply the value
+    //The result of the formula is float. To avoid floats we multiply it
     //by 1000. By this we convert mVolts to Volts. So the formula becomes
-    //V=((adc_value*Vref)/1024)*1000. Vref=5Volt * 1000 = 5000 Simplify to
-    //V=(adc_value*5000)/1024
-    uint32_t volts = adc_read() * 5000L / 1024L;    //L indicates that the value is long int
-                                                    //if you don't include it you will take 
-                                                    //wrong resaults
-    return(volts);
+    //V=((adc_value*Vref)/1024)*1000.    
+    //L indicates that the value is long int
+    result  = (adc_read() * 5L* 1000L)/1024L;
+    return(result-15);  //15 correction value
 }
 
 static char int_to_float_char(uint16_t value){
@@ -282,8 +276,8 @@ static uint16_t to_fahrenheit(uint16_t temperature){
     return(temperature);
 }
 
-uint8_t sense_temp(uint8_t T, uint8_t H){
-    return(T-4/10*(T-10)*(1-(1/100)*H));
+uint16_t sense_temp(uint8_t T, uint8_t H){
+    return((600 * T + 4 * T * H + 4000 - 40 * T)/100);
 }
 
 static void welcome_msg(){
@@ -307,7 +301,7 @@ static void welcome_msg(){
     
     _delay_ms(1000);
     _delay_ms(1000);
-
+    
     lcd_clrscr();       //Clear display and home cursor
 
     lcd_gotoxy(0,0);    //Display In/Out and degree symbol
@@ -315,8 +309,9 @@ static void welcome_msg(){
     lcd_putc(DEGREE);
 
     lcd_gotoxy(10,1);
-    lcd_puts("->  ");
+    lcd_puts("(  ");
     lcd_putc(DEGREE);
+    lcd_puts(" )");
     
     lcd_gotoxy(0,1);
     lcd_puts("OUT:  .0");

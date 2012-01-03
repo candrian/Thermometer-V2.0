@@ -69,6 +69,6 @@ static char int_to_char(uint16_t value);
 //Convert Celsius to Fahrenheit
 static uint16_t to_fahrenheit(uint16_t temperature);
 //Calculate the sense themperature
-uint8_t sense_temp(uint8_t T, uint8_t H);
+uint16_t sense_temp(uint8_t T, uint8_t H);
 //Welcome Message
 static void welcome_msg();

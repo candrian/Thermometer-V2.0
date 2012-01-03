@@ -57,7 +57,11 @@ uint8_t DHT_Read_Data(uint8_t select){
         while (laststate==DHT_Read_Pin) {
             _delay_us(1);
             counter++;
+
+            if (counter>255) break;
         }
+        
+        if (counter>255) break;
         
         //laststate==_BV(DHT_PIN) checks if laststate was High
         //ignore the first 2 transitions which are the DHT Response
