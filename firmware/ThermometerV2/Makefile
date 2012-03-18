@@ -18,7 +18,7 @@ DEVICE     = atmega8
 CLOCK      = 16000000
 PROGRAMMER = -c stk500v2 -P /dev/tty.usbserial
 OBJECTS    = main.o
-FUSES      = -U hfuse:w:0xd9:m -U lfuse:w:0x24:m
+FUSES      = -U lfuse:w:0xce:m -U hfuse:w:0xd9:m
 
 # AVR fuse calculator
 # http://www.engbedded.com/fusecalc/
